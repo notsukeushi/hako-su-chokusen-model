@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>箱数直線モデル　基本概念の解説</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+            margin: 0;
+            padding: 16px 14px 32px;
+            line-height: 1.75;
+            font-size: 0.95rem;
+        }
+        .top {
+            background: #2563eb;
+            color: #fff;
+            margin: -16px -14px 20px;
+            padding: 18px 16px;
+        }
+        .top h1 { font-size: 1.15rem; margin: 0 0 6px; }
+        .top p { margin: 0; font-size: 0.82rem; opacity: 0.95; }
+        .lang-nav {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .lang-nav a {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: #fff;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: 2px solid #bfdbfe;
+        }
+        section {
+            background: #fff;
+            border-radius: 14px;
+            padding: 16px 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+        }
+        h2 {
+            font-size: 1rem;
+            color: #1e40af;
+            margin: 0 0 10px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #dbeafe;
+        }
+        h3 {
+            font-size: 0.92rem;
+            color: #334155;
+            margin: 16px 0 6px;
+        }
+        p, li { margin: 0 0 8px; color: #334155; }
+        ul { margin: 0 0 8px; padding-left: 1.2em; }
+        .tip {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 10px 12px;
+            border-radius: 0 8px 8px 0;
+            margin: 10px 0;
+            font-size: 0.88rem;
+        }
+        .formula {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-weight: 700;
+            text-align: center;
+            margin: 10px 0;
+            color: #1d4ed8;
+        }
+        .fig {
+            font-family: ui-monospace, monospace;
+            font-size: 0.78rem;
+            background: #fafafa;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+            overflow-x: auto;
+            line-height: 1.5;
+            margin: 10px 0;
+            white-space: pre;
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+        .footer a { color: #2563eb; }
+        :target { scroll-margin-top: 12px; }
+        .en section h2 { font-family: "Segoe UI", system-ui, sans-serif; }
+    </style>
+</head>
+<body>
+    <header class="top">
+        <h1>箱数直線モデル　基本概念</h1>
+        <p>保護者の方・小学3年生向けの解説（日本語／English）</p>
+    </header>
+
+    <nav class="lang-nav" aria-label="言語">
+        <a href="#ja">日本語</a>
+        <a href="#en">English</a>
+        <a href="index.html">問題へ</a>
+    </nav>
+
+    <div id="ja">
+        <section>
+            <h2>箱数直線モデルとは？</h2>
+            <p>すうちょくせん（数直線）の上に、<strong>大きさが 1 の箱</strong>を横に並べて考える方法です。次の3つを、同じ絵の中で結びつけて学びます。</p>
+            <ul>
+                <li><strong>点の名前</strong> … 数直線の目盛り（左はじ・右はじなど）</li>
+                <li><strong>きょり</strong> … 2つの点の間の長さ</li>
+                <li><strong>箱の数</strong> … 並べた箱が何こあるか</li>
+            </ul>
+            <p>この問題集では、左はじの点の名前は <strong>1〜20</strong>、右はじの点の名前は <strong>30〜49</strong> の範囲で出題します（計算しやすい数字にしています）。</p>
+        </section>
+
+        <section>
+            <h2>① 点の名前と「きょり」</h2>
+            <p>数直線には、左と右に <strong>点</strong> があります。その点についている数字を「<strong>点の名前</strong>」と呼びます。</p>
+            <div class="fig">左はじの点の名前 3          右はじの点の名前 8
+    |---------------------------|
+    3                           8</div>
+            <p>2つの点のあいだの長さを <strong>きょり</strong> といいます。</p>
+            <div class="formula">きょり ＝ 右はじの点の名前 − 左はじの点の名前</div>
+            <p>例：3 から 8 まで → 8 − 3 ＝ <strong>5</strong></p>
+            <div class="tip">ポイント：「右の数 − 左の数」で、点と点の間の長さが求まります。</div>
+        </section>
+
+        <section>
+            <h2>② 箱の数と「きょり」は同じ</h2>
+            <p>大きさが <strong>1</strong> の箱を、すき間なく並べると、<strong>箱の数</strong> と <strong>きょり</strong> は同じ数字になります。</p>
+            <div class="fig">  3:   4:   5:   6:   7:
+  |---|---|---|---|---|
+  3                   8
+  ← 箱が5こ → きょりも5 →</div>
+            <div class="formula">箱の数 ＝ きょり（箱の大きさが1のとき）</div>
+            <p>だから、右はじの点の名前がわかれば「左 ＋ 箱の数」で右はじが求まりますし、逆もできます。</p>
+        </section>
+
+        <section>
+            <h2>③ 箱の「名前」</h2>
+            <p>それぞれの箱には <strong>名前</strong> があります。ルールは次のとおりです。</p>
+            <ul>
+                <li>箱の<strong>左はじ</strong>が、どの点の上にあるかで決まる</li>
+                <li>数字のうしろに <strong>：</strong>（コロン）をつける → 例：<strong>3:</strong></li>
+            </ul>
+            <div class="fig">点 3 の上に箱 → 名前は 3:
+点 7 の上に箱 → 名前は 7:</div>
+            <div class="tip">「3:」は「左端が 3 の箱」という意味です。点の名前「3」と、箱の名前「3:」は、数字の部分が同じです。</div>
+        </section>
+
+        <section>
+            <h2>④ 箱が何こあるか数える（重要）</h2>
+            <p><strong>箱 3:</strong> から <strong>箱 7:</strong> まで（7: もふくむ）何こ？ という問題では、<strong>箱の名前同士を引くだけ</strong> では足りないことがあります。</p>
+            <p>箱の数は、<strong>点</strong> 同士の差で数えます。</p>
+            <div class="formula">箱の数 ＝（右の点の名前）−（左の点の名前）</div>
+            <p>例：点 3 から点 8 まで箱を並べる → 8 − 3 ＝ <strong>5こ</strong>（箱 3: 〜 7:）</p>
+            <p>別の言い方：<strong>（いちばん右の箱の右はじの点）−（いちばん左の箱の左はじの点）</strong></p>
+            <div class="formula">箱 a: 〜 b:（b: もふくむ）の箱の数 ＝ (b ＋ 1) − a</div>
+            <div class="tip">7: − 3: ＝ 4 ではなく、点 8 − 点 3 ＝ 5 が正解、という考え方です（問15で学びます）。</div>
+        </section>
+
+        <section>
+            <h2>⑤ あだ名（エイリアス）</h2>
+            <p>箱には、本名のほかに <strong>あだ名</strong> をつけることができます。</p>
+            <ul>
+                <li>「<strong>1番</strong>」「<strong>2番</strong>」… 左から数えた順番</li>
+                <li>「<strong>みどり</strong>」「<strong>あか</strong>」… 好きな名前</li>
+                <li>「<strong>14:</strong>」のように数字＋：のあだ名 … 本名との差が一定（＋10 など）</li>
+            </ul>
+            <p>あだ名が変わっても、<strong>箱が並んでいる位置（本名）</strong> は変わりません。あだ名から本名を求める問題では、「あだ名同士の差 ＝ 本名同士の差」と考えるとよいです。</p>
+        </section>
+
+        <section>
+            <h2>⑥ 問題集の3パート</h2>
+            <ul>
+                <li><strong>パート1</strong> … 点の名前・きょり・箱の数（箱の名前はまだ出ない）</li>
+                <li><strong>パート2</strong> … 箱の名前（3: など）を使う</li>
+                <li><strong>パート3</strong> … あだ名（1番、みどり など）を使う</li>
+            </ul>
+            <p>図は、箱がたくさんあっても <strong>左2こ・・・・・いちばん右1こ</strong> だけ描きます。・・・・ のあいだにも箱が続いている、と考えてください。</p>
+        </section>
+
+        <section>
+            <h2>⑦ おうちでの使い方（保護者の方へ）</h2>
+            <ul>
+                <li>まずパート1で「きょり ＝ 右 − 左」を確かめる</li>
+                <li>パート2で「箱の名前 ＝ 左端の数字：」に慣れる</li>
+                <li>パート3は、本名とあだ名の対応を一緒に図で確かめる</li>
+                <li>「新しい問題」で数字が変わるので、同じ型を何度も練習できます</li>
+            </ul>
+        </section>
+    </div>
+
+    <div id="en" class="en">
+        <section>
+            <h2>What is the Box Number Line Model?</h2>
+            <p>It is a way to learn on a <strong>number line</strong> by placing <strong>boxes of size 1</strong> next to each other. You connect three ideas in one picture:</p>
+            <ul>
+                <li><strong>Point names</strong> … numbers on the ticks (left end, right end, etc.)</li>
+                <li><strong>Distance</strong> … the length between two points</li>
+                <li><strong>Number of boxes</strong> … how many boxes are in a row</li>
+            </ul>
+            <p>In this workbook, the left point name is between <strong>1 and 20</strong>, and the right point name is between <strong>30 and 49</strong> (easier numbers for Grade 3).</p>
+        </section>
+
+        <section>
+            <h2>① Point names and distance</h2>
+            <p>The number line has a <strong>left end</strong> and a <strong>right end</strong>. The number at each tick is called the <strong>point name</strong>.</p>
+            <div class="fig">Left point name 3          Right point name 8
+    |---------------------------|
+    3                           8</div>
+            <p>The length between two points is the <strong>distance</strong>.</p>
+            <div class="formula">distance = right point name − left point name</div>
+            <p>Example: from 3 to 8 → 8 − 3 = <strong>5</strong></p>
+            <div class="tip">Tip: “right number minus left number” gives the distance.</div>
+        </section>
+
+        <section>
+            <h2>② Number of boxes equals distance</h2>
+            <p>When each box has <strong>size 1</strong> and they touch with no gaps, the <strong>number of boxes</strong> equals the <strong>distance</strong>.</p>
+            <div class="fig">  3:   4:   5:   6:   7:
+  |---|---|---|---|---|
+  3                   8
+  ← 5 boxes → distance is also 5 →</div>
+            <div class="formula">number of boxes = distance (when box size is 1)</div>
+            <p>So if you know the left point and the number of boxes, you can find the right point: left + number of boxes.</p>
+        </section>
+
+        <section>
+            <h2>③ Box names</h2>
+            <p>Each box has a <strong>name</strong>:</p>
+            <ul>
+                <li>It is decided by the <strong>left edge</strong> of the box on the number line</li>
+                <li>Write the number plus a <strong>colon</strong> → e.g. <strong>3:</strong></li>
+            </ul>
+            <div class="fig">Box starts at point 3 → name is 3:
+Box starts at point 7 → name is 7:</div>
+            <div class="tip">“3:” means “the box whose left edge is at 3.” The digit matches the point name at that place.</div>
+        </section>
+
+        <section>
+            <h2>④ Counting boxes (important)</h2>
+            <p>For “from box <strong>3:</strong> to box <strong>7:</strong> (including 7:), how many boxes?”, subtracting box names alone is not enough.</p>
+            <p>Count boxes using <strong>points</strong>:</p>
+            <div class="formula">number of boxes = (right point name) − (left point name)</div>
+            <p>Example: boxes from point 3 to point 8 → 8 − 3 = <strong>5 boxes</strong> (boxes 3: through 7:)</p>
+            <div class="formula">boxes from a: through b: (include b:) = (b + 1) − a</div>
+            <div class="tip">7: − 3: = 4 is wrong; point 8 − point 3 = 5 is correct (see Part 2, Question 15).</div>
+        </section>
+
+        <section>
+            <h2>⑤ Aliases (nicknames)</h2>
+            <p>Boxes can have <strong>nicknames</strong> as well as real names:</p>
+            <ul>
+                <li><strong>1st, 2nd, 3rd</strong> … order from the left</li>
+                <li><strong>Green, Red</strong> … any words</li>
+                <li>Number nicknames like <strong>14:</strong> … a fixed gap from the real name (+10, etc.)</li>
+            </ul>
+            <p>The nickname can change, but the box stays in the same place. To find real names, use: <strong>gap between nicknames = gap between real names</strong>.</p>
+        </section>
+
+        <section>
+            <h2>⑥ Three parts in this workbook</h2>
+            <ul>
+                <li><strong>Part 1</strong> … point names, distance, number of boxes</li>
+                <li><strong>Part 2</strong> … box names (3:, etc.)</li>
+                <li><strong>Part 3</strong> … aliases (1st, Green, etc.)</li>
+            </ul>
+            <p>Diagrams show only <strong>2 boxes on the left ···· 1 box on the right</strong>. Imagine boxes continuing in the “····” part.</p>
+        </section>
+
+        <section>
+            <h2>⑦ For parents at home</h2>
+            <ul>
+                <li>Start with Part 1: “distance = right − left”</li>
+                <li>Part 2: get used to “box name = number at left edge + colon”</li>
+                <li>Part 3: match nicknames to real names on the diagram together</li>
+                <li>Press “New problems” to practice the same types with new numbers</li>
+            </ul>
+        </section>
+    </div>
+
+    <p class="footer"><a href="index.html">← 問題集トップへ</a></p>
+</body>
+</html>
