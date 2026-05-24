@@ -184,7 +184,7 @@
         <details class="hint-box" open>
             <summary>▶ 考え方（2026-05-23 基本原理）</summary>
             <div class="hint-body">
-                <strong>共通</strong>　左はじの点の名前 1〜20、右はじの点の名前 30〜99（計算で答える）<br>
+                <strong>共通</strong>　左はじの点の名前 1〜20、右はじの点の名前 30〜49（計算で答える）<br>
                 図は左2箱・・・・・最後の1箱だけ表示（全部は並べません）
             </div>
         </details>
@@ -213,13 +213,13 @@
         const COORD_LEFT_MIN = 1;
         const COORD_LEFT_MAX = 20;
         const COORD_RIGHT_MIN = 30;
-        const COORD_RIGHT_MAX = 99;
+        const COORD_RIGHT_MAX = 49;
 
         function randInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        /** 左はじの点の名前 1〜20、右はじの点の名前 30〜99、箱列は left から連続 */
+        /** 左はじの点の名前 1〜20、右はじの点の名前 30〜49、箱列は left から連続 */
         function layoutWide() {
             const left = randInt(COORD_LEFT_MIN, COORD_LEFT_MAX);
             const minSpan = COORD_RIGHT_MIN - left;
@@ -290,7 +290,7 @@
             // ── パート1：座標・距離・箱の数のみ（7問）──
             const part1 = {
                 title: 'パート1　座標・きょり・箱の数',
-                desc: '左はじの点の名前 1〜20、右はじの点の名前 30〜99　／　図は左2箱・・・・・最後の1箱',
+                desc: '左はじの点の名前 1〜20、右はじの点の名前 30〜49　／　図は左2箱・・・・・最後の1箱',
                 problems: []
             };
 
@@ -338,7 +338,7 @@
                 [ans('左', String(lay16.left), `右 ${lay16.right} − 箱 ${lay16.span}こ ＝ 左はじの点の名前 ${lay16.left}。${sameNote}`)]
             ));
 
-            const lay17 = { left: 13, right: 70, span: 57, n: 57 };
+            const lay17 = { left: 13, right: 42, span: 29, n: 29 };
             part1.problems.push(prob('きょりと右はじの点の名前',
                 `左はじの点の名前 <strong>${lay17.left}</strong> から箱を <strong>${lay17.span}こ</strong> ならべます。<br>① きょり　② 右はじの点の名前`,
                 { left: lay17.left, right: lay17.right, boxCount: lay17.span, rightLabel: '？', distLabel: 'きょり ？', countLabel: lay17.span + 'こ', showBoxNames: false },
@@ -353,11 +353,11 @@
             // ── パート2：箱の名前（7問）──
             const part2 = {
                 title: 'パート2　箱の名前',
-                desc: '左はじの点の名前 1〜20、右はじの点の名前 30〜99　／　図は左2箱・・・・・最後の1箱',
+                desc: '左はじの点の名前 1〜20、右はじの点の名前 30〜49　／　図は左2箱・・・・・最後の1箱',
                 problems: []
             };
 
-            const p21 = { left: 1, right: 94, span: 93, n: 93 };
+            const p21 = { left: 5, right: 49, span: 44, n: 44 };
             const hi21 = p21.span - 1;
             const name21 = (p21.left + hi21) + ':';
             part2.problems.push(prob('箱の名前',
@@ -378,7 +378,7 @@
                 [ans('名前', lastName22, `(${lay22.left} ＋ ${lay22.span} − 1): ＝ ${lastName22}。${sameNote2}`)]
             ));
 
-            const lay23 = { left: 15, right: 94, span: 79, n: 79 };
+            const lay23 = { left: 15, right: 45, span: 30, n: 30 };
             const firstName23 = lay23.left + ':';
             part2.problems.push(prob('左はじの点の名前と先頭の箱',
                 `箱 <strong>${lay23.span}こ</strong> で右はじの点の名前 <strong>${lay23.right}</strong>。先頭の箱の名前は？`,
@@ -386,7 +386,7 @@
                 [ans('名前', firstName23, `右はじの点の名前 ${lay23.right} − 箱 ${lay23.span}こ ＝ 左はじの点の名前 ${lay23.left} → 先頭 ${firstName23}。${sameNote2}`)]
             ));
 
-            const lay24 = { left: 15, right: 94, span: 79, n: 79 };
+            const lay24 = { left: 12, right: 46, span: 34, n: 34 };
             const lastName24 = (lay24.right - 1) + ':';
             part2.problems.push(prob('いちばん右の箱の名前',
                 `左はじの点の名前 <strong>${lay24.left}</strong> から箱 <strong>${lay24.span}こ</strong>（右はじの点の名前 <strong>${lay24.right}</strong>）。いちばん右の箱の名前は？`,
@@ -402,7 +402,7 @@
                 [ans('3つ', `${p25.left}: ${p25.left + 1}: ${lastName25}`, `先頭 ${p25.left}: ${p25.left + 1}:、最後 ${lastName25}`)]
             ));
 
-            const r26 = { left: 80, right: 86, span: 6, boxA: 80, boxB: 85, count: 6 };
+            const r26 = { left: 30, right: 36, span: 6, boxA: 30, boxB: 35, count: 6 };
             part2.problems.push(prob('箱から箱まで',
                 `<strong>${r26.boxA}:</strong> から <strong>${r26.boxB}:</strong> まで（${r26.boxB}: もふくむ）。箱は何こ？`,
                 {
@@ -414,7 +414,7 @@
                 [ans('箱', r26.count + 'こ', `箱${r26.boxB}: − 箱${r26.boxA}: ＝ 5 ではありません。点 ${r26.right} − 点 ${r26.left} ＝ ${r26.count} が答えになります。`)]
             ));
 
-            const lay27 = { left: 13, right: 88, span: 75, n: 75 };
+            const lay27 = { left: 13, right: 45, span: 32, n: 32 };
             const last27 = (lay27.right - 1) + ':';
             part2.problems.push(prob('先頭の名前と最後の箱',
                 `先頭の箱が <strong>${lay27.left}:</strong>、右はじの点の名前 <strong>${lay27.right}</strong>。いちばん右の箱の名前は？`,
@@ -432,11 +432,11 @@
             // ── パート3：エイリアス（7問）──
             const part3 = {
                 title: 'パート3　エイリアス（あだ名）',
-                desc: '左はじの点の名前 1〜20、右はじの点の名前 30〜99　／　図は左2箱・・・・・最後の1箱',
+                desc: '左はじの点の名前 1〜20、右はじの点の名前 30〜49　／　図は左2箱・・・・・最後の1箱',
                 problems: []
             };
 
-            const lay31 = { left: 15, right: 72, span: 57, n: 57 };
+            const lay31 = { left: 15, right: 42, span: 27, n: 27 };
             const ans31 = (lay31.left + 1) + ':';
             part3.problems.push(prob('序数（2番）',
                 `箱 <strong>${lay31.left}:</strong> を「<strong>1番</strong>」と呼ぶ（右はじの点の名前 <strong>${lay31.right}</strong>）。2番の箱の名前は？`,
@@ -460,7 +460,7 @@
                 [ans('3ばんめ', ans32, `1ばんめ ${lay32.left}: から数えて 3ばんめ → ${ans32}`)]
             ));
 
-            const lay33 = { left: 8, right: 88, span: 80, n: 80 };
+            const lay33 = { left: 8, right: 45, span: 37, n: 37 };
             part3.problems.push(prob('右端は何番目',
                 `いちばん<strong>左</strong>の箱を「<strong>1番</strong>」と呼びます（あだ名・エイリアス）。右はじの点の名前 <strong>${lay33.right}</strong>。いちばん<strong>右</strong>の箱は何番？`,
                 {
@@ -485,9 +485,9 @@
                 [ans('箱', r34.count + 'こ', `(${r34.boxB} ＋ 1) − ${r34.boxA} ＝ ${r34.count}こ。${sameNote3}`)]
             ));
 
-            const lay35 = { left: 4, right: 63, span: 59, n: 59 };
+            const lay35 = { left: 4, right: 42, span: 38, n: 38 };
             const aliasOffset35 = 10;
-            const lastAlias35 = 62 + aliasOffset35;
+            const lastAlias35 = (lay35.left + lay35.span - 1) + aliasOffset35;
             part3.problems.push(prob('あだ名の数え方',
                 `箱 <strong>${lay35.left}:</strong> のあだ名を <strong>14:</strong> とする（ずっと +${aliasOffset35}）。右はじの点の名前 <strong>${lay35.right}</strong>。いちばん右のあだ名は？`,
                 {
@@ -498,7 +498,7 @@
                 [ans('あだ名', String(lastAlias35), `14:と4:のちがいは10だから`)]
             ));
 
-            const lay36 = { left: 11, right: 90, span: 79, n: 79 };
+            const lay36 = { left: 11, right: 45, span: 34, n: 34 };
             const last36 = (lay36.right - 1) + ':';
             part3.problems.push(prob('1ばんめから右はじの点の名前',
                 `左はじの点の名前 <strong>${lay36.left}</strong> から箱 <strong>${lay36.span}こ</strong> ならべます。<br>① 右はじの点の名前　② いちばん右の箱の名前`,
