@@ -629,20 +629,16 @@
                 ]
             ));
 
-            const lay37 = { left: 12, right: 45, span: 33, n: 33 };
-            const idxMidori = lay37.span - 3;
-            const idxAka = lay37.span - 2;
-            const idxKiiro = lay37.span - 1;
-            const nameMidori = (lay37.left + idxMidori) + ':';
-            const nameAka = (lay37.left + idxAka) + ':';
-            const nameKiiro = (lay37.left + idxKiiro) + ':';
+            const lay37 = layoutWide();
+            const nameMidori = lay37.left + ':';
+            const nameAka = (lay37.left + 1) + ':';
+            const nameKiiro = (lay37.left + lay37.span - 1) + ':';
             part3.problems.push(prob('あだ名と箱の名前（3つ）',
-                `「<strong>みどり</strong>」は右端の箱のあだ名（別名）、「<strong>あか</strong>」はその右の箱のあだ名（別名）、「<strong>きいろ</strong>」は右はしにある箱のあだ名（別名）です。このとき、「みどり」、「あか」、「きいろ」の箱の名前（本名、本当の名前）をそれぞれ答えてください。<br>名前（本名）は、数字：（たとえば 15: ）のように答えてください。`,
+                `「<strong>みどり</strong>」は左はしの箱のあだ名（別名）、「<strong>あか</strong>」はその右の箱のあだ名（別名）、「<strong>きいろ</strong>」は右はしにある箱のあだ名（別名）です。このとき、「みどり」、「あか」、「きいろ」の箱の名前（本名、本当の名前）をそれぞれ答えてください。<br>名前（本名）は、数字：（たとえば 15: ）のように答えてください。`,
                 {
                     left: lay37.left, right: lay37.right, boxCount: lay37.span,
-                    aliasLabelsByIdx: { [idxMidori]: 'みどり', [idxAka]: 'あか', [idxKiiro]: 'きいろ' },
-                    showBoxNames: false,
-                    compactTailCount: 3
+                    aliasLabelsByIdx: { 0: 'みどり', 1: 'あか', [lay37.span - 1]: 'きいろ' },
+                    showBoxNames: false
                 },
                 [
                     ans('みどり', nameMidori, `みどり → ${nameMidori}`),
