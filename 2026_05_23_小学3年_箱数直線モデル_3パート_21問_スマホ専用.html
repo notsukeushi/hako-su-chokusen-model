@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#2563eb">
+    <title>箱数直線モデル　小学3年（スマホ専用・21問）</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
+            padding-bottom: calc(118px + env(safe-area-inset-bottom, 0px));
+            overscroll-behavior-y: contain;
+        }
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: #2563eb;
+            color: #fff;
+            padding: 12px 16px;
+            padding-top: calc(12px + env(safe-area-inset-top, 0px));
+            box-shadow: 0 2px 12px rgba(37, 99, 235, 0.35);
+        }
+        .top-bar h1 { font-size: 1rem; font-weight: 900; margin: 0 0 4px; line-height: 1.3; }
+        .session-id { font-size: 0.7rem; opacity: 0.9; margin: 0; }
+        .progress-bar {
+            font-size: 0.78rem;
+            font-weight: 700;
+            margin: 6px 0 0;
+            opacity: 0.95;
+        }
+        .part-tabs {
+            position: sticky;
+            top: calc(52px + env(safe-area-inset-top, 0px));
+            z-index: 19;
+            display: flex;
+            gap: 6px;
+            padding: 8px 12px;
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .part-tabs button {
+            flex: 1;
+            font-family: inherit;
+            font-size: 0.72rem;
+            font-weight: 900;
+            padding: 10px 4px;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            background: #fff;
+            color: #475569;
+            min-height: 44px;
+            line-height: 1.25;
+        }
+        .part-tabs button.active {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: #fff;
+        }
+        .q-jump {
+            margin-bottom: 12px;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 8px 10px;
+        }
+        .q-jump summary {
+            font-size: 0.8rem;
+            font-weight: 900;
+            color: #475569;
+            cursor: pointer;
+            list-style: none;
+        }
+        .q-jump summary::-webkit-details-marker { display: none; }
+        .q-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .q-grid button {
+            font-family: inherit;
+            font-size: 0.75rem;
+            font-weight: 900;
+            min-height: 40px;
+            border: none;
+            border-radius: 8px;
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+        .q-grid button.current {
+            background: #2563eb;
+            color: #fff;
+        }
+        .part-banner {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            color: #fff;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 900;
+            line-height: 1.4;
+        }
+        .part-banner span {
+            display: block;
+            font-size: 0.68rem;
+            font-weight: 400;
+            opacity: 0.92;
+            margin-top: 2px;
+        }
+        .content { padding: 12px 12px 8px; }
+        .hint-box {
+            background: #eff6ff;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 0.82rem;
+            line-height: 1.55;
+            margin-bottom: 14px;
+            border: 1px solid #bfdbfe;
+        }
+        .hint-box summary { font-weight: 900; color: #1d4ed8; cursor: pointer; list-style: none; }
+        .hint-box summary::-webkit-details-marker { display: none; }
+        .hint-body { margin-top: 8px; color: #334155; }
+        .problem {
+            background: #fff;
+            border-radius: 14px;
+            padding: 16px 14px;
+            margin-bottom: 14px;
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+        }
+        .problem-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .problem-badge {
+            flex-shrink: 0;
+            background: #2563eb;
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 900;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        .problem-title { font-size: 0.9rem; font-weight: 900; color: #1e40af; line-height: 1.35; margin: 0; }
+        .problem-text { font-size: 1.05rem; line-height: 1.7; margin: 0 0 10px; }
+        .problem-text strong { color: #1d4ed8; }
+        .diagram-wrap {
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 6px 4px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .diagram-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x;
+            padding: 4px 0 6px;
+            max-height: 168px;
+        }
+        .diagram-scroll svg {
+            display: block;
+            height: 160px;
+            width: auto;
+            max-width: none;
+            min-width: 0;
+        }
+        .swipe-hint { font-size: 0.68rem; color: #94a3b8; text-align: center; margin: 4px 0 0; }
+        .answer-block { margin-top: 8px; }
+        .answer-block + .answer-block { margin-top: 14px; }
+        .answer-block label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+        .answer-block input {
+            width: 100%;
+            font-family: inherit;
+            font-size: 16px;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fff;
+        }
+        .answer-block input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+        .parent-answer {
+            display: none;
+            margin-top: 8px;
+            padding: 10px 12px;
+            background: #f0fdf4;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            color: #166534;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+        body.show-answers .parent-answer { display: block; }
+        .bottom-bar {
+            position: fixed;
+            left: 0; right: 0; bottom: 0;
+            z-index: 30;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 6px;
+            padding: 8px 10px;
+            padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+            background: #fff;
+            border-top: 1px solid #e2e8f0;
+            box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.1);
+        }
+        .bottom-bar button {
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 900;
+            padding: 14px 6px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            min-height: 48px;
+        }
+        #btnPrev { grid-column: 1; grid-row: 1; background: #f1f5f9; color: #334155; border: 2px solid #e2e8f0; }
+        #btnNext { grid-column: 3; grid-row: 1; background: #f1f5f9; color: #334155; border: 2px solid #e2e8f0; }
+        #btnPrev:disabled, #btnNext:disabled { opacity: 0.35; }
+        #btnNew { grid-column: 2; grid-row: 1; background: #2563eb; color: #fff; }
+        #btnNew:active { background: #1d4ed8; }
+        #btnAnswers {
+            grid-column: 1 / -1;
+            grid-row: 2;
+            background: #f8fafc;
+            color: #475569;
+            border: 2px solid #cbd5e1;
+            min-height: 44px;
+        }
+        #btnAnswers.showing { background: #fef3c7; border-color: #d97706; color: #b45309; }
+        .footer-link { text-align: center; font-size: 0.72rem; color: #94a3b8; padding: 8px 12px 16px; line-height: 1.5; }
+        .footer-link a { color: #2563eb; }
+        .box-path { fill: none; stroke: #2563eb; stroke-width: 2.5; stroke-linecap: round; }
+        .box-path.hl { stroke: #d97706; stroke-width: 3; }
+        .box-path.range-hl { stroke: #059669; stroke-width: 3; }
+        .dist-path { fill: none; stroke: #64748b; stroke-width: 2; }
+        .count-path { fill: none; stroke: #d97706; stroke-width: 2.5; }
+        @media (max-width: 360px) {
+            .problem-text { font-size: 1rem; }
+            .part-tabs button { font-size: 0.66rem; padding: 8px 2px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="top-bar">
+        <h1>箱数直線モデル　小学3年（スマホ専用）</h1>
+        <p class="session-id" id="sessionId">読み込み中…</p>
+        <p class="progress-bar" id="progressText">問1 / 21</p>
+    </header>
+
+    <nav class="part-tabs" aria-label="パート切替">
+        <button type="button" data-part="0" id="tabPart0">① 座標・きょり</button>
+        <button type="button" data-part="1" id="tabPart1">② 箱の名前</button>
+        <button type="button" data-part="2" id="tabPart2">③ あだ名</button>
+    </nav>
+
+    <div class="content">
+        <details class="hint-box">
+            <summary>▶ 考え方（タップで開く）</summary>
+            <div class="hint-body">
+                <strong>共通</strong>　左はじの点の名前 1〜20、右はじの点の名前 30〜99（計算で答える）<br>
+                図は左2箱・・・・・最後の1箱だけ表示（全部は並べません）<br>
+                <strong>操作</strong>　下の「前へ」「次へ」で1問ずつ。パートタブで切り替え。
+            </div>
+        </details>
+        <details class="q-jump" id="qJump">
+            <summary>▶ 問番号でジャンプ（1〜21）</summary>
+            <div class="q-grid" id="qGrid" role="navigation" aria-label="問番号"></div>
+        </details>
+        <div id="problemsRoot"></div>
+        <p class="footer-link">
+            スマホ専用・1問ずつ表示（全21問）<br>
+            <a href="2026_05_23_小学3年_箱数直線モデル_3パート_乱数版.html">一覧表示版（21問まとめて）</a><br>
+            <a href="index.html">トップページへ</a>
+        </p>
+    </div>
+
+    <nav class="bottom-bar" aria-label="操作">
+        <button type="button" id="btnPrev" aria-label="前の問">◀ 前へ</button>
+        <button type="button" id="btnNew">🔄 新問題</button>
+        <button type="button" id="btnNext" aria-label="次の問">次へ ▶</button>
+        <button type="button" id="btnAnswers">👁 答えを見る</button>
+    </nav>
+
+    <script>
+        const BOX_W = 38;
+        const START_X = 26;
+        const BASE_Y = 76;
+        const BOX_H = 30;
+        const BOX_FLOAT = 6;
+        const VIEW_PAD = 8;
+        const MIN_SVG_W = 190;
+        const ELL_W = 36;
+        const COORD_LEFT_MIN = 1;
+        const COORD_LEFT_MAX = 20;
+        const COORD_RIGHT_MIN = 30;
+        const COORD_RIGHT_MAX = 99;
+
+        function randInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        /** 左はじの点の名前 1〜20、右はじの点の名前 30〜99、箱列は left から連続 */
+        function layoutWide() {
+            const left = randInt(COORD_LEFT_MIN, COORD_LEFT_MAX);
+            const minSpan = COORD_RIGHT_MIN - left;
+            const maxSpan = COORD_RIGHT_MAX - left;
+            const span = randInt(minSpan, maxSpan);
+            return { left, right: left + span, span, n: span };
+        }
+
+        function visibleHighlightIndex(span) {
+            const opts = [0, 1, span - 1];
+            const uniq = opts.filter((v, i, a) => a.indexOf(v) === i);
+            return uniq[randInt(0, uniq.length - 1)];
+        }
+
+        function boxRangeWide(gapMin, gapMax) {
+            const lay = layoutWide();
+            const gap = randInt(gapMin, gapMax);
+            const boxA = lay.left;
+            let boxB = boxA + gap;
+            if (boxB >= lay.right) boxB = lay.right - 1;
+            const count = boxB - boxA + 1;
+            return { ...lay, boxA, boxB, count, gap };
+        }
+
+        function getCompactSlots(n) {
+            if (n <= 0) return [];
+            if (n === 1) return [{ type: 'box', idx: 0 }];
+            if (n === 2) return [{ type: 'box', idx: 0 }, { type: 'box', idx: 1 }];
+            return [
+                { type: 'box', idx: 0 },
+                { type: 'box', idx: 1 },
+                { type: 'ellipsis' },
+                { type: 'box', idx: n - 1 }
+            ];
+        }
+
+        function buildCompactPositions(n) {
+            const slots = getCompactSlots(n);
+            const items = [];
+            let x = START_X;
+            items.push({ kind: 'tick', coord: null, x, role: 'left' });
+            slots.forEach((slot) => {
+                if (slot.type === 'ellipsis') {
+                    x += BOX_W * 0.55;
+                    items.push({ kind: 'ellipsis', x: x + ELL_W / 2 });
+                    x += ELL_W + BOX_W * 0.2;
+                } else {
+                    items.push({ kind: 'box', idx: slot.idx, x });
+                    x += BOX_W;
+                }
+            });
+            items.push({ kind: 'tick', coord: null, x: x + BOX_W * 0.25, role: 'right' });
+            const totalW = x + BOX_W * 0.5 - START_X + 24;
+            return { items, totalW, slots };
+        }
+
+        function prob(title, html, diagram, answers) {
+            return { title, html, diagram, answers };
+        }
+
+        function ans(label, value, explain) {
+            return { label, value, explain };
+        }
+
+        function generateSet() {
+            const parts = [];
+
+            // ── パート1：座標・距離・箱の数のみ（7問）──
+            const part1 = {
+                title: 'パート1　座標・きょり・箱の数',
+                desc: '左はじの点の名前 1〜20、右はじの点の名前 30〜99　／　図は左2箱・・・・・最後の1箱',
+                problems: []
+            };
+
+            const p11 = layoutWide();
+            part1.problems.push(prob('きょり',
+                `左はじの点の名前 <strong>${p11.left}</strong>、右はじの点の名前 <strong>${p11.right}</strong>。きょりはいくつ？`,
+                { left: p11.left, right: p11.right, showBoxes: false, distLabel: 'きょりは？' },
+                [ans('きょり', String(p11.span), `右 ${p11.right} − 左 ${p11.left} ＝ ${p11.span}`)]
+            ));
+
+            const lay12 = layoutWide();
+            part1.problems.push(prob('右はじの点の名前（きょりから）',
+                `左はじの点の名前 <strong>${lay12.left}</strong>。きょり <strong>${lay12.span}</strong> だけ右へ。右はじの点の名前は？`,
+                { left: lay12.left, right: lay12.right, showBoxes: false, distLabel: 'きょり ' + lay12.span, rightLabel: '？' },
+                [ans('右', String(lay12.right), `左 ${lay12.left} ＋ きょり ${lay12.span} ＝ ${lay12.right}`)]
+            ));
+
+            const lay13 = layoutWide();
+            part1.problems.push(prob('左はじの点の名前（きょりから）',
+                `右はじの点の名前 <strong>${lay13.right}</strong>。きょり <strong>${lay13.span}</strong>。左はじの点の名前は？`,
+                { left: lay13.left, right: lay13.right, showBoxes: false, distLabel: 'きょり ' + lay13.span, leftLabel: '？' },
+                [ans('左', String(lay13.left), `右 ${lay13.right} − きょり ${lay13.span} ＝ ${lay13.left}`)]
+            ));
+
+            const p14 = layoutWide();
+            const sameNote = '　きょりと、箱の数は同じです。';
+            const sameNote2 = '　箱の数ときょりは同じ数字になります。';
+            part1.problems.push(prob('箱の数',
+                `左はじの点の名前 <strong>${p14.left}</strong> から右はじの点の名前 <strong>${p14.right}</strong> まで、大きさ1の箱をならべました。箱は何こ？`,
+                { left: p14.left, right: p14.right, boxCount: p14.span, distLabel: 'きょり ' + p14.span, countLabel: '？こ', showBoxNames: false },
+                [ans('箱', p14.span + 'こ', `右 ${p14.right} − 左 ${p14.left} ＝ ${p14.span}こ。${sameNote}`)]
+            ));
+
+            const lay15 = layoutWide();
+            part1.problems.push(prob('右はじの点の名前（箱の数から）',
+                `左はじの点の名前 <strong>${lay15.left}</strong> から、大きさ1の箱を <strong>${lay15.span}こ</strong>。右はじの点の名前は？`,
+                { left: lay15.left, right: lay15.right, boxCount: lay15.span, rightLabel: '？', countLabel: lay15.span + 'こ', showBoxNames: false },
+                [ans('右', String(lay15.right), `左 ${lay15.left} ＋ 箱 ${lay15.span}こ ＝ 右はじの点の名前 ${lay15.right}`)]
+            ));
+
+            const lay16 = layoutWide();
+            part1.problems.push(prob('左はじの点の名前（箱の数から）',
+                `大きさ1の箱を <strong>${lay16.span}こ</strong> ならべ、右はじの点の名前が <strong>${lay16.right}</strong>。左はじの点の名前は？`,
+                { left: lay16.left, right: lay16.right, boxCount: lay16.span, leftLabel: '？', countLabel: lay16.span + 'こ', showBoxNames: false },
+                [ans('左', String(lay16.left), `右 ${lay16.right} − 箱 ${lay16.span}こ ＝ 左はじの点の名前 ${lay16.left}。${sameNote}`)]
+            ));
+
+            const lay17 = { left: 13, right: 70, span: 57, n: 57 };
+            part1.problems.push(prob('きょりと右はじの点の名前',
+                `左はじの点の名前 <strong>${lay17.left}</strong> から箱を <strong>${lay17.span}こ</strong> ならべます。<br>① きょり　② 右はじの点の名前`,
+                { left: lay17.left, right: lay17.right, boxCount: lay17.span, rightLabel: '？', distLabel: 'きょり ？', countLabel: lay17.span + 'こ', showBoxNames: false },
+                [
+                    ans('①', String(lay17.span), `箱 ${lay17.span}こ → きょり ${lay17.span}。きょりと、箱の数は同じです。`),
+                    ans('②', String(lay17.right), `左 ${lay17.left} ＋ 箱 ${lay17.span}こ ＝ 右はじの点の名前 ${lay17.right}`)
+                ]
+            ));
+
+            parts.push(part1);
+
+            // ── パート2：箱の名前（7問）──
+            const part2 = {
+                title: 'パート2　箱の名前',
+                desc: '左はじの点の名前 1〜20、右はじの点の名前 30〜99　／　図は左2箱・・・・・最後の1箱',
+                problems: []
+            };
+
+            const p21 = { left: 1, right: 94, span: 93, n: 93 };
+            const hi21 = p21.span - 1;
+            const name21 = (p21.left + hi21) + ':';
+            part2.problems.push(prob('箱の名前',
+                `左はじの点の名前 <strong>${p21.left}</strong>、右はじの点の名前 <strong>${p21.right}</strong>（箱 <strong>${p21.span}こ</strong>）。色が<strong>オレンジ</strong>の箱の名前は？`,
+                { left: p21.left, right: p21.right, boxCount: p21.span, highlightBoxIndex: hi21, showBoxNames: false, countLabel: p21.span + 'こ' },
+                [ans('名前', name21, `右はじの点の名前 ${p21.right} → 箱 ${p21.span}こ。いちばん右の箱 ${name21}`)]
+            ));
+
+            const lay22 = { left: 12, right: 45, span: 33, n: 33 };
+            const lastName22 = (lay22.right - 1) + ':';
+            part2.problems.push(prob('いちばん右の箱の名前',
+                `左はじの点の名前 <strong>${lay22.left}</strong> から箱 <strong>${lay22.span}こ</strong>（右はじの点の名前 <strong>${lay22.right}</strong>）。いちばん<strong>右</strong>の箱の名前は？`,
+                {
+                    left: lay22.left, right: lay22.right, boxCount: lay22.span,
+                    countLabel: lay22.span + 'こ', highlightBoxIndex: lay22.span - 1,
+                    showBoxNames: false
+                },
+                [ans('名前', lastName22, `(${lay22.left} ＋ ${lay22.span} − 1): ＝ ${lastName22}。${sameNote2}`)]
+            ));
+
+            const lay23 = { left: 15, right: 94, span: 79, n: 79 };
+            const firstName23 = lay23.left + ':';
+            part2.problems.push(prob('左はじの点の名前と先頭の箱',
+                `箱 <strong>${lay23.span}こ</strong> で右はじの点の名前 <strong>${lay23.right}</strong>。先頭の箱の名前は？`,
+                { left: lay23.left, right: lay23.right, boxCount: lay23.span, leftLabel: '？', countLabel: lay23.span + 'こ', showBoxNames: false },
+                [ans('名前', firstName23, `右はじの点の名前 ${lay23.right} − 箱 ${lay23.span}こ ＝ 左はじの点の名前 ${lay23.left} → 先頭 ${firstName23}。${sameNote2}`)]
+            ));
+
+            const lay24 = { left: 15, right: 94, span: 79, n: 79 };
+            const lastName24 = (lay24.right - 1) + ':';
+            part2.problems.push(prob('いちばん右の箱の名前',
+                `左はじの点の名前 <strong>${lay24.left}</strong> から箱 <strong>${lay24.span}こ</strong>（右はじの点の名前 <strong>${lay24.right}</strong>）。いちばん右の箱の名前は？`,
+                { left: lay24.left, right: lay24.right, boxCount: lay24.span, countLabel: lay24.span + 'こ', highlightBoxIndex: lay24.span - 1, showBoxNames: false },
+                [ans('名前', lastName24, `(${lay24.left} ＋ ${lay24.span} − 1): ＝ ${lastName24}。${sameNote2}`)]
+            ));
+
+            const p25 = layoutWide();
+            const lastName25 = (p25.right - 1) + ':';
+            part2.problems.push(prob('名前（はじめとなごり）',
+                `左はじの点の名前 <strong>${p25.left}</strong>、右はじの点の名前 <strong>${p25.right}</strong>。先頭2この名前と、いちばん右の箱の名前は？`,
+                { left: p25.left, right: p25.right, boxCount: p25.span, showBoxNames: true, maskAllNames: true },
+                [ans('3つ', `${p25.left}: ${p25.left + 1}: ${lastName25}`, `先頭 ${p25.left}: ${p25.left + 1}:、最後 ${lastName25}`)]
+            ));
+
+            const r26 = { left: 80, right: 86, span: 6, boxA: 80, boxB: 85, count: 6 };
+            part2.problems.push(prob('箱から箱まで',
+                `<strong>${r26.boxA}:</strong> から <strong>${r26.boxB}:</strong> まで（${r26.boxB}: もふくむ）。箱は何こ？`,
+                {
+                    left: r26.left, right: r26.right, boxCount: r26.span,
+                    rangeBoxA: r26.boxA, rangeBoxB: r26.boxB,
+                    countLabel: '？こ',
+                    showBoxNames: false
+                },
+                [ans('箱', r26.count + 'こ', `箱${r26.boxB}: − 箱${r26.boxA}: ＝ 5 ではありません。点 ${r26.right} − 点 ${r26.left} ＝ ${r26.count} が答えになります。`)]
+            ));
+
+            const lay27 = { left: 13, right: 88, span: 75, n: 75 };
+            const last27 = (lay27.right - 1) + ':';
+            part2.problems.push(prob('先頭の名前と最後の箱',
+                `先頭の箱が <strong>${lay27.left}:</strong>、右はじの点の名前 <strong>${lay27.right}</strong>。いちばん右の箱の名前は？`,
+                {
+                    left: lay27.left, right: lay27.right, boxCount: lay27.span,
+                    showBoxNames: true,
+                    firstBoxName: lay27.left + ':',
+                    lastBoxName: '？：'
+                },
+                [ans('名前', last27, `ひとめで分かりますね`)]
+            ));
+
+            parts.push(part2);
+
+            // ── パート3：エイリアス（7問）──
+            const part3 = {
+                title: 'パート3　エイリアス（あだ名）',
+                desc: '左はじの点の名前 1〜20、右はじの点の名前 30〜99　／　図は左2箱・・・・・最後の1箱',
+                problems: []
+            };
+
+            const lay31 = { left: 15, right: 72, span: 57, n: 57 };
+            const ans31 = (lay31.left + 1) + ':';
+            part3.problems.push(prob('序数（2番）',
+                `箱 <strong>${lay31.left}:</strong> を「<strong>1番</strong>」と呼ぶ（右はじの点の名前 <strong>${lay31.right}</strong>）。2番の箱の名前は？`,
+                {
+                    left: lay31.left, right: lay31.right, boxCount: lay31.span,
+                    aliasLabelsByIdx: { 0: '1番' },
+                    showBoxNames: false
+                },
+                [ans('2番', ans31, `1番 ${lay31.left}: の右 → ${ans31}`)]
+            ));
+
+            const lay32 = layoutWide();
+            const ans32 = (lay32.left + 2) + ':';
+            part3.problems.push(prob('序数（3ばんめ）',
+                `<strong>${lay32.left}:</strong> を1ばんめとする（右はじの点の名前 <strong>${lay32.right}</strong>）。3ばんめの箱の名前は？`,
+                {
+                    left: lay32.left, right: lay32.right, boxCount: lay32.span,
+                    aliasLabelsByIdx: { 0: '1ばんめ', [lay32.span - 1]: '3ばんめ' },
+                    showBoxNames: false
+                },
+                [ans('3ばんめ', ans32, `1ばんめ ${lay32.left}: から数えて 3ばんめ → ${ans32}`)]
+            ));
+
+            const lay33 = { left: 8, right: 88, span: 80, n: 80 };
+            part3.problems.push(prob('右端は何番目',
+                `いちばん<strong>左</strong>の箱を「<strong>1番</strong>」と呼びます（あだ名・エイリアス）。右はじの点の名前 <strong>${lay33.right}</strong>。いちばん<strong>右</strong>の箱は何番？`,
+                {
+                    left: lay33.left, right: lay33.right, boxCount: lay33.span,
+                    aliasLabelsByIdx: { 0: '1番' },
+                    showBoxNames: false
+                },
+                [ans('番', lay33.span + '番', `点${lay33.left}と1番のちがいは７、だから点${lay33.right - 1}と７の違いは点${lay33.right - 1} − 7 ＝ ${lay33.span}番`)]
+            ));
+
+            const r34 = { left: 8, right: 49, span: 41, boxA: 8, boxB: 48, count: 41 };
+            const sameNote3 = '　きょりと箱の数は同じになります。';
+            part3.problems.push(prob('あだ名で数える（はじめとおわり）',
+                `「<strong>スタート</strong>」＝ <strong>${r34.boxA}:</strong>、「<strong>ゴール</strong>」＝ <strong>48:</strong>（右はじの点の名前 <strong>${r34.right}</strong>）。スタートからゴールまで（ゴールもふくむ）何こ？`,
+                {
+                    left: r34.left, right: r34.right, boxCount: r34.span,
+                    rangeBoxA: r34.boxA, rangeBoxB: r34.boxB,
+                    endpointAlias: { start: 'スタート', end: 'ゴール', startIdx: 0, endIdx: r34.boxB - r34.left },
+                    showBoxNames: false,
+                    countLabel: '？こ'
+                },
+                [ans('箱', r34.count + 'こ', `(${r34.boxB} ＋ 1) − ${r34.boxA} ＝ ${r34.count}こ。${sameNote3}`)]
+            ));
+
+            const lay35 = { left: 4, right: 63, span: 59, n: 59 };
+            const aliasOffset35 = 10;
+            const lastAlias35 = 62 + aliasOffset35;
+            part3.problems.push(prob('あだ名の数え方',
+                `箱 <strong>${lay35.left}:</strong> のあだ名を <strong>14:</strong> とする（ずっと +${aliasOffset35}）。右はじの点の名前 <strong>${lay35.right}</strong>。いちばん右のあだ名は？`,
+                {
+                    left: lay35.left, right: lay35.right, boxCount: lay35.span,
+                    firstBoxName: '14:',
+                    showBoxNames: true
+                },
+                [ans('あだ名', String(lastAlias35), `14:と4:のちがいは10だから`)]
+            ));
+
+            const lay36 = { left: 11, right: 90, span: 79, n: 79 };
+            const last36 = (lay36.right - 1) + ':';
+            part3.problems.push(prob('1ばんめから右はじの点の名前',
+                `左はじの点の名前 <strong>${lay36.left}</strong> から箱 <strong>${lay36.span}こ</strong> ならべます。<br>① 右はじの点の名前　② いちばん右の箱の名前`,
+                {
+                    left: lay36.left, right: lay36.right, boxCount: lay36.span,
+                    showBoxNames: false,
+                    hideRightCoord: true,
+                    countLabel: lay36.span + 'こ'
+                },
+                [
+                    ans('①', String(lay36.right), `左はじの点の名前 ${lay36.left} ＋ 箱 ${lay36.span}こ ＝ 右はじの点の名前 ${lay36.right}`),
+                    ans('②', last36, `(${lay36.left} ＋ ${lay36.span} − 1): ＝ ${last36}`)
+                ]
+            ));
+
+            const lay37 = layoutWide();
+            part3.problems.push(prob('あだ名と箱の名前',
+                `「<strong>みどり</strong>」＝ <strong>${lay37.left}:</strong>、「<strong>あか</strong>」はその右（右はじの点の名前 <strong>${lay37.right}</strong>）。あかの箱の名前は？`,
+                {
+                    left: lay37.left, right: lay37.right, boxCount: lay37.span,
+                    endpointAlias: { start: 'みどり', end: 'あか', startIdx: 0, endIdx: 1 },
+                    showBoxNames: true
+                },
+                [ans('名前', (lay37.left + 1) + ':', `みどり ${lay37.left}: の右 → ${lay37.left + 1}:`)]
+            ));
+
+            parts.push(part3);
+            return { parts };
+        }
+
+        function countArcLayout(boxTop, hasAliasRow, showNames) {
+            const arcY = hasAliasRow && showNames ? boxTop - 42 : boxTop - 34;
+            const arcPeak = arcY - 22;
+            const labelY = arcPeak - 10;
+            return { arcY, arcPeak, labelY };
+        }
+
+        function computeViewBox(opt, totalW, boxCount) {
+            const boxTop = BASE_Y - BOX_FLOAT - BOX_H;
+            const showNames = opt.showBoxNames !== false && !opt.hideNames && boxCount > 0;
+            const hasAlias = opt.endpointAlias || opt.showAliasOnBoxes || opt.aliasLabelsByIdx;
+            const hasAliasRow = hasAlias;
+            let minY = 12;
+            let maxY = BASE_Y + 34;
+
+            if (opt.countLabel && boxCount > 0) {
+                const arc = countArcLayout(boxTop, hasAliasRow, showNames);
+                minY = Math.min(minY, arc.labelY - 14);
+            }
+            if (hasAlias && showNames) minY = Math.min(minY, boxTop - 42);
+            else if (hasAlias) minY = Math.min(minY, boxTop - 28);
+            else if (showNames) minY = Math.min(minY, boxTop - 22);
+
+            if (opt.distLabel) maxY = Math.max(maxY, BASE_Y + 66);
+
+            const width = Math.max(MIN_SVG_W, totalW + START_X + 16);
+            const rawMin = minY;
+            return { width, minY: rawMin - VIEW_PAD, height: maxY - rawMin + VIEW_PAD * 2, boxTop };
+        }
+
+        function drawBoxAt(h, x, boxTop, left, idx, opt, showNames, aliasY, nameY) {
+            const cx = x + BOX_W / 2;
+            const coord = left + idx;
+            const name = coord + ':';
+            const isHl = opt.highlightBoxIndex === idx;
+            let inRange = false;
+            if (opt.rangeBoxA !== undefined && opt.rangeBoxB !== undefined) {
+                inRange = coord >= opt.rangeBoxA && coord <= opt.rangeBoxB;
+            }
+            let cls = 'box-path';
+            if (isHl) cls += ' hl';
+            else if (inRange) cls += ' range-hl';
+            h += `<path d="M ${x + 2} ${boxTop} v ${BOX_H} h ${BOX_W - 4} v ${-BOX_H}" class="${cls}"/>`;
+
+            const aliasMap = opt.aliasLabelsByIdx || {};
+            const aliasText = aliasMap[idx];
+            const ep = opt.endpointAlias;
+            let aliasLabel = aliasText;
+            if (ep && ep.startIdx === idx) aliasLabel = ep.start;
+            if (ep && ep.endIdx === idx) aliasLabel = ep.end;
+
+            if (aliasLabel) {
+                h += `<text x="${cx}" y="${aliasY}" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97706">${aliasLabel}</text>`;
+            } else if (opt.showAliasOnBoxes) {
+                const lastIdx = (opt.boxCount ?? 0) - 1;
+                const showAliasHere = !opt.hideAliasOnLast || idx !== lastIdx;
+                const onlyIdx = opt.aliasOnlyIndices;
+                const allowIdx = !onlyIdx || onlyIdx.indexOf(idx) >= 0;
+                if (showAliasHere && allowIdx) {
+                    const aliasNum = coord + (opt.aliasOffset || 0);
+                    h += `<text x="${cx}" y="${aliasY}" text-anchor="middle" font-size="10" font-weight="bold" fill="#d97706">${aliasNum}</text>`;
+                }
+            }
+
+            if (showNames) {
+                const lastIdx = (opt.boxCount ?? 0) - 1;
+                let label = null;
+                if (idx === 0 && opt.firstBoxName) label = opt.firstBoxName;
+                else if (idx === lastIdx && opt.lastBoxName) label = opt.lastBoxName;
+                else if (!opt.firstBoxName && !opt.lastBoxName) label = opt.maskAllNames ? '？：' : name;
+                if (label) {
+                    const fill = isHl ? '#d97706' : (inRange ? '#059669' : '#4f46e5');
+                    h += `<text x="${cx}" y="${nameY}" text-anchor="middle" font-size="10" font-weight="900" fill="${fill}">${label}</text>`;
+                }
+            }
+            if (isHl && opt.showBoxNames === false) {
+                h += `<text x="${cx}" y="${boxTop + BOX_H / 2 + 4}" text-anchor="middle" font-size="12" fill="#d97706" font-weight="bold">？</text>`;
+            }
+            return h;
+        }
+
+        function drawDiagram(container, opt) {
+            const left = opt.left;
+            const right = opt.right;
+            const span = right - left;
+            const showBoxes = opt.showBoxes !== false;
+            const boxCount = showBoxes ? (opt.boxCount ?? span) : 0;
+            const n = boxCount || span;
+
+            let totalW;
+            let lineEndX;
+            if (showBoxes && boxCount > 0) {
+                const pos = buildCompactPositions(boxCount);
+                totalW = pos.totalW;
+                lineEndX = pos.items[pos.items.length - 1].x;
+            } else {
+                totalW = BOX_W * 2.2;
+                lineEndX = START_X + totalW;
+            }
+
+            const { width, minY, height, boxTop } = computeViewBox(opt, totalW, boxCount);
+            const svgNS = 'http://www.w3.org/2000/svg';
+            const svg = document.createElementNS(svgNS, 'svg');
+            svg.setAttribute('viewBox', `0 ${minY} ${width} ${height}`);
+            svg.setAttribute('preserveAspectRatio', 'xMinYMid meet');
+            svg.setAttribute('role', 'img');
+
+            let h = '';
+            h += `<line x1="${START_X - 6}" y1="${BASE_Y}" x2="${lineEndX + 10}" y2="${BASE_Y}" stroke="#1e293b" stroke-width="2"/>`;
+
+            const showNames = opt.showBoxNames !== false && !opt.hideNames;
+            const hasAliasRow = opt.endpointAlias || opt.showAliasOnBoxes || opt.aliasLabelsByIdx;
+            const aliasY = showNames && hasAliasRow ? boxTop - 28 : boxTop - 14;
+            const nameY = hasAliasRow ? boxTop - 12 : boxTop - 6;
+
+            if (showBoxes && boxCount > 0) {
+                const pos = buildCompactPositions(boxCount);
+                pos.items.forEach((item) => {
+                    if (item.kind === 'tick') {
+                        const coord = item.role === 'left' ? left : right;
+                        let label = String(coord);
+                        if (item.role === 'left' && opt.leftLabel !== undefined) label = opt.leftLabel;
+                        if (item.role === 'right' && opt.hideRightCoord) label = '';
+                        else if (item.role === 'right' && opt.rightLabel !== undefined) label = opt.rightLabel;
+                        h += `<line x1="${item.x}" y1="${BASE_Y - 7}" x2="${item.x}" y2="${BASE_Y + 7}" stroke="#1e293b" stroke-width="2"/>`;
+                        if (label !== '') {
+                            h += `<text x="${item.x}" y="${BASE_Y + 22}" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">${label}</text>`;
+                        }
+                    } else if (item.kind === 'ellipsis') {
+                        h += `<text x="${item.x}" y="${BASE_Y - 2}" text-anchor="middle" font-size="13" font-weight="bold" fill="#94a3b8">・・・・</text>`;
+                    } else if (item.kind === 'box') {
+                        h = drawBoxAt(h, item.x, boxTop, left, item.idx, opt, showNames, aliasY, nameY);
+                    }
+                });
+            } else {
+                const xL = START_X;
+                const xR = START_X + totalW;
+                let labelL = opt.leftLabel !== undefined ? opt.leftLabel : String(left);
+                let labelR = opt.rightLabel !== undefined ? opt.rightLabel : String(right);
+                h += `<line x1="${xL}" y1="${BASE_Y - 7}" x2="${xL}" y2="${BASE_Y + 7}" stroke="#1e293b" stroke-width="2"/>`;
+                h += `<text x="${xL}" y="${BASE_Y + 22}" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">${labelL}</text>`;
+                h += `<line x1="${xR}" y1="${BASE_Y - 7}" x2="${xR}" y2="${BASE_Y + 7}" stroke="#1e293b" stroke-width="2"/>`;
+                h += `<text x="${xR}" y="${BASE_Y + 22}" text-anchor="middle" font-size="13" font-weight="bold" fill="#1e293b">${labelR}</text>`;
+            }
+
+            const midX = (START_X + lineEndX) / 2;
+            if (opt.distLabel) {
+                h += `<path d="M ${START_X} ${BASE_Y + 28} Q ${midX} ${BASE_Y + 42} ${lineEndX} ${BASE_Y + 28}" class="dist-path" stroke-dasharray="3"/>`;
+                h += `<text x="${midX}" y="${BASE_Y + 54}" text-anchor="middle" font-size="11" font-weight="bold" fill="#64748b">${opt.distLabel}</text>`;
+            }
+            if (opt.countLabel && showBoxes && boxCount > 0) {
+                const arc = countArcLayout(boxTop, hasAliasRow, showNames);
+                h += `<path d="M ${START_X} ${arc.arcY} Q ${midX} ${arc.arcPeak} ${lineEndX} ${arc.arcY}" class="count-path"/>`;
+                h += `<text x="${midX}" y="${arc.labelY}" text-anchor="middle" font-size="12" font-weight="900" fill="#d97706">${opt.countLabel}</text>`;
+            }
+
+            svg.innerHTML = h;
+            const wrap = document.createElement('div');
+            wrap.className = 'diagram-scroll';
+            wrap.appendChild(svg);
+            container.appendChild(wrap);
+            if (showBoxes && boxCount > 3) {
+                const hint = document.createElement('p');
+                hint.className = 'swipe-hint';
+                hint.textContent = '・・・・ のあいだにも箱が続いています（全部は図に描いていません）';
+                container.appendChild(hint);
+            }
+        }
+
+        const PART_START = [0, 7, 14];
+        const app = { parts: [], flat: [], index: 0, answers: {} };
+
+        function flattenParts(parts) {
+            const flat = [];
+            let n = 0;
+            parts.forEach((part, partIndex) => {
+                part.problems.forEach((problem, localIndex) => {
+                    n += 1;
+                    flat.push({ globalNum: n, partIndex, localIndex: localIndex + 1, part, problem });
+                });
+            });
+            return flat;
+        }
+
+        function buildQuestionGrid() {
+            const grid = document.getElementById('qGrid');
+            grid.innerHTML = '';
+            app.flat.forEach((item, i) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = String(item.globalNum);
+                btn.setAttribute('aria-label', `問${item.globalNum}へ`);
+                btn.addEventListener('click', () => {
+                    showQuestion(i);
+                    document.getElementById('qJump').open = false;
+                });
+                grid.appendChild(btn);
+            });
+        }
+
+        function updateNavUI() {
+            const item = app.flat[app.index];
+            const part = item.part;
+            document.getElementById('progressText').textContent =
+                `問${item.globalNum} / 21　｜　${part.title.replace(/^パート\d　/, '')}　${item.localIndex}/7`;
+            document.getElementById('btnPrev').disabled = app.index <= 0;
+            document.getElementById('btnNext').disabled = app.index >= app.flat.length - 1;
+            document.querySelectorAll('.part-tabs button').forEach((btn, pi) => {
+                btn.classList.toggle('active', pi === item.partIndex);
+            });
+            document.querySelectorAll('#qGrid button').forEach((btn, i) => {
+                btn.classList.toggle('current', i === app.index);
+            });
+        }
+
+        function renderOneCard(item) {
+            const root = document.getElementById('problemsRoot');
+            root.innerHTML = '';
+            const p = item.problem;
+            const qNum = item.globalNum;
+
+            const banner = document.createElement('div');
+            banner.className = 'part-banner';
+            banner.innerHTML = `${item.part.title}<span>${item.part.desc}</span>`;
+            root.appendChild(banner);
+
+            const card = document.createElement('article');
+            card.className = 'problem';
+            card.id = 'q' + qNum;
+            card.innerHTML = `
+                <div class="problem-header">
+                    <span class="problem-badge">問${qNum}</span>
+                    <p class="problem-title">${p.title}</p>
+                </div>
+            `;
+            const text = document.createElement('p');
+            text.className = 'problem-text';
+            text.innerHTML = p.html;
+            card.appendChild(text);
+
+            const diagramWrap = document.createElement('div');
+            diagramWrap.className = 'diagram-wrap';
+            card.appendChild(diagramWrap);
+
+            p.answers.forEach((a, ai) => {
+                const block = document.createElement('div');
+                block.className = 'answer-block';
+                const label = document.createElement('label');
+                label.textContent = '答え' + (p.answers.length > 1 ? `（${a.label}）` : '');
+                const inputId = `ans-${qNum}-${ai}`;
+                label.htmlFor = inputId;
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = inputId;
+                input.autocomplete = 'off';
+                input.inputMode = 'text';
+                input.enterKeyHint = ai < p.answers.length - 1 ? 'next' : 'done';
+                const key = qNum + '-' + ai;
+                if (app.answers[key] !== undefined) input.value = app.answers[key];
+                input.addEventListener('input', () => { app.answers[key] = input.value; });
+                const parentAns = document.createElement('div');
+                parentAns.className = 'parent-answer';
+                parentAns.textContent = `正解：${a.value}　／　${a.explain}`;
+                block.appendChild(label);
+                block.appendChild(input);
+                block.appendChild(parentAns);
+                card.appendChild(block);
+            });
+
+            root.appendChild(card);
+            drawDiagram(diagramWrap, p.diagram);
+            updateNavUI();
+        }
+
+        function showQuestion(index) {
+            app.index = Math.max(0, Math.min(app.flat.length - 1, index));
+            renderOneCard(app.flat[app.index]);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goPart(partIndex) {
+            showQuestion(PART_START[partIndex] ?? 0);
+        }
+
+        function initSet({ parts }) {
+            app.parts = parts;
+            app.flat = flattenParts(parts);
+            app.index = 0;
+            app.answers = {};
+            buildQuestionGrid();
+            showQuestion(0);
+        }
+
+        function newSession() {
+            const id = Date.now().toString(36).slice(-6).toUpperCase();
+            document.getElementById('sessionId').textContent = 'セット ID：' + id;
+            initSet(generateSet());
+            document.body.classList.remove('show-answers');
+            const btn = document.getElementById('btnAnswers');
+            btn.textContent = '👁 答えを見る';
+            btn.classList.remove('showing');
+        }
+
+        document.getElementById('btnNew').addEventListener('click', newSession);
+        document.getElementById('btnPrev').addEventListener('click', () => showQuestion(app.index - 1));
+        document.getElementById('btnNext').addEventListener('click', () => showQuestion(app.index + 1));
+        document.querySelectorAll('.part-tabs button').forEach((btn) => {
+            btn.addEventListener('click', () => goPart(Number(btn.dataset.part)));
+        });
+        document.getElementById('btnAnswers').addEventListener('click', () => {
+            document.body.classList.toggle('show-answers');
+            const btn = document.getElementById('btnAnswers');
+            const on = document.body.classList.contains('show-answers');
+            btn.textContent = on ? '答えを隠す' : '👁 答えを見る';
+            btn.classList.toggle('showing', on);
+        });
+
+        let touchStartX = 0;
+        const swipeArea = document.querySelector('.content');
+        swipeArea.addEventListener('touchstart', (e) => {
+            if (e.target.closest('.diagram-scroll')) return;
+            if (e.touches.length === 1) touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+        swipeArea.addEventListener('touchend', (e) => {
+            if (e.target.closest('.diagram-scroll')) return;
+            if (!e.changedTouches.length) return;
+            const dx = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(dx) < 72) return;
+            if (dx < 0 && app.index < app.flat.length - 1) showQuestion(app.index + 1);
+            else if (dx > 0 && app.index > 0) showQuestion(app.index - 1);
+        }, { passive: true });
+
+        newSession();
+    </script>
+</body>
+</html>
